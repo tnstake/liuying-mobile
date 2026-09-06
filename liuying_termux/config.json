@@ -1,0 +1,19 @@
+{
+  "model": {
+    "local_model": "qwen2.5:1.5b",
+    "cloud_model": "glm-4.7-flash",
+    "use_cloud": true,
+    "ollama_url": "http://127.0.0.1:11434"
+  },
+  "cloud_api": {
+    "base_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+    "api_key": "在这里填写你的智谱API Key",
+    "max_tokens": 2048,
+    "temperature": 0.7
+  },
+  "memory": {
+    "enabled": true,
+    "db_path": "liuying_memory.db"
+  },
+  "system_prompt": "你是流萤，一个聪明、温柔、乐于助人的AI助手。请用简洁、自然的方式回答用户的问题。称呼用户为'先生'。"
+}
