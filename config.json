@@ -1,0 +1,25 @@
+{
+  "app_name": "流萤",
+  "version": "1.0.0",
+  "ollama_base_url": "http://127.0.0.1:11434",
+  "default_model": "liuying:8b",
+  "light_model": "qwen2.5:1.5b",
+  "cloud_model": "glm-4.7-flash",
+  "cloud_api_key": "",
+  "cloud_base_url": "https://open.bigmodel.cn/api/paas/v4",
+  "user_name": "take",
+  "ai_name": "流萤",
+  "sync": {
+    "enabled": false,
+    "webdav_url": "",
+    "username": "",
+    "password": "",
+    "remote_path": "/liuying_sync",
+    "auto_sync": true
+  },
+  "ui": {
+    "theme": "light",
+    "font_size": 14,
+    "bubble_radius": 12
+  }
+}

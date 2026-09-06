@@ -1,0 +1,77 @@
+﻿name: Build Liuying Mobile APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3-pip python3-dev \
+            libncurses5 libncurses5-dev libtinfo5 cmake libffi-dev libssl-dev \
+            zip unzip wget openjdk-17-jdk
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython virtualenv
+
+      - name: Configure Android SDK
+        run: |
+          export ANDROIDSDK=$HOME/android-sdk
+          export ANDROIDNDK=$HOME/android-ndk
+          export ANDROIDAPI=33
+          export NDKAPI=21
+          
+          mkdir -p $ANDROIDSDK/cmdline-tools
+          cd /tmp
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip -q -o cmdline-tools.zip -d $ANDROIDSDK/cmdline-tools/
+          mv $ANDROIDSDK/cmdline-tools/cmdline-tools $ANDROIDSDK/cmdline-tools/latest
+          
+          yes | $ANDROIDSDK/cmdline-tools/latest/bin/sdkmanager --licenses
+          $ANDROIDSDK/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          
+          wget -q https://dl.google.com/android/repository/android-ndk-r25b-linux.zip -O ndk.zip
+          unzip -q -o ndk.zip -d $HOME/
+          mv $HOME/android-ndk-r25b $ANDROIDNDK
+          
+          echo "ANDROIDSDK=$ANDROIDSDK" >> $GITHUB_ENV
+          echo "ANDROIDNDK=$ANDROIDNDK" >> $GITHUB_ENV
+          echo "ANDROIDAPI=33" >> $GITHUB_ENV
+          echo "NDKAPI=21" >> $GITHUB_ENV
+
+      - name: Build APK
+        run: |
+          cd $GITHUB_WORKSPACE
+          export ANDROIDSDK=$HOME/android-sdk
+          export ANDROIDNDK=$HOME/android-ndk
+          export ANDROIDAPI=33
+          export NDKAPI=21
+          buildozer android debug 2>&1 | tail -200
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: liuying-mobile-apk
+          path: bin/*.apk
+          retention-days: 30

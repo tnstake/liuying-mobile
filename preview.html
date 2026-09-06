@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流萤手机版 - 界面预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  /* 手机外壳 */
+  .phone {
+    width: 375px;
+    height: 750px;
+    background: #fff;
+    border-radius: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 8px solid #1a1a1a;
+  }
+
+  /* 状态栏 */
+  .status-bar {
+    height: 44px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1b1c;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  /* 顶部栏 */
+  .top-bar {
+    height: 52px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .top-bar .name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1b1c;
+    flex: 1;
+  }
+  .top-bar .status {
+    font-size: 12px;
+    color: #52c41a;
+    margin-right: 12px;
+  }
+  .top-bar .model {
+    font-size: 11px;
+    color: #5b9bd5;
+    background: #e3f2fd;
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+
+  /* 聊天区域 */
+  .chat-area {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 16px 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 消息气泡 */
+  .message {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .message.ai {
+    align-self: flex-start;
+    background: #fff;
+    color: #1a1b1c;
+    border: 1px solid #e5e7eb;
+    border-bottom-left-radius: 4px;
+  }
+  .message.user {
+    align-self: flex-end;
+    background: #e3f2fd;
+    color: #1a1b1c;
+    border-bottom-right-radius: 4px;
+  }
+
+  /* 时间戳 */
+  .time {
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: center;
+    margin: 4px 0;
+  }
+
+  /* 输入区域 */
+  .input-area {
+    background: #fff;
+    padding: 12px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .input-area input {
+    flex: 1;
+    height: 44px;
+    border: none;
+    background: #f3f4f6;
+    border-radius: 22px;
+    padding: 0 18px;
+    font-size: 15px;
+    color: #1a1b1c;
+    outline: none;
+  }
+  .input-area input::placeholder {
+    color: #9ca3af;
+  }
+  .input-area button {
+    width: 60px;
+    height: 44px;
+    border: none;
+    background: #5b9bd5;
+    color: #fff;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .input-area button:hover {
+    background: #4a8bc5;
+  }
+  .input-area button:active {
+    transform: scale(0.95);
+  }
+
+  /* 底部指示条 */
+  .home-indicator {
+    height: 20px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .home-indicator::after {
+    content: '';
+    width: 134px;
+    height: 5px;
+    background: #1a1a1a;
+    border-radius: 3px;
+  }
+
+  /* 说明文字 */
+  .info {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  /* 打字动画 */
+  .typing {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px 0;
+  }
+  .typing span {
+    width: 8px;
+    height: 8px;
+    background: #9ca3af;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-8px); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- 状态栏 -->
+  <div class="status-bar">
+    <span>1:48</span>
+    <span>📶 5G 🔋 63%</span>
+  </div>
+
+  <!-- 顶部栏 -->
+  <div class="top-bar">
+    <div class="name">流萤</div>
+    <div class="status">● 在线</div>
+    <div class="model">liuying:8b</div>
+  </div>
+
+  <!-- 聊天区域 -->
+  <div class="chat-area">
+    <div class="time">今天 13:40</div>
+
+    <div class="message ai">
+      先生，您好！我是流萤。<br>有什么可以帮您的吗？
+    </div>
+
+    <div class="message user">
+      你好，帮我写一份Python学习计划
+    </div>
+
+    <div class="message ai">
+      <div class="typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="message ai" style="animation-delay: 0.5s;">
+      好的，先生！为您制定一份4周Python学习计划：<br><br>
+      <b>第1周：基础语法</b><br>
+      • 变量、数据类型、运算符<br>
+      • 条件语句、循环<br>
+      • 函数定义与调用<br><br>
+      <b>第2周：数据结构</b><br>
+      • 列表、元组、字典、集合<br>
+      • 字符串处理<br>
+      • 文件读写
+    </div>
+
+    <div class="message user">
+      今天天气怎么样
+    </div>
+
+    <div class="message ai">
+      先生，我目前无法获取实时天气信息。建议您查看天气App，或者告诉我您所在的城市，我可以帮您搜索天气信息。
+    </div>
+
+    <div class="time">今天 13:45</div>
+
+    <div class="message user">
+      提醒我明天下午3点开会
+    </div>
+
+    <div class="message ai">
+      ✅ 已为您添加日程提醒：<br>
+      <b>时间</b>：明天 15:00<br>
+      <b>内容</b>：开会<br>
+      到点会自动提醒您。
+    </div>
+  </div>
+
+  <!-- 输入区域 -->
+  <div class="input-area">
+    <input type="text" placeholder="输入消息..." value="">
+    <button>发送</button>
+  </div>
+
+  <!-- 底部指示条 -->
+  <div class="home-indicator"></div>
+
+  <div class="info">流萤手机版 v1.0.0 - 界面预览</div>
+</div>
+
+<script>
+  // 模拟输入交互
+  const input = document.querySelector('.input-area input');
+  const button = document.querySelector('.input-area button');
+  const chatArea = document.querySelector('.chat-area');
+
+  button.addEventListener('click', sendMessage);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    // 添加用户消息
+    const userMsg = document.createElement('div');
+    userMsg.className = 'message user';
+    userMsg.textContent = text;
+    chatArea.appendChild(userMsg);
+
+    input.value = '';
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    // 显示打字动画
+    const typingMsg = document.createElement('div');
+    typingMsg.className = 'message ai';
+    typingMsg.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+    chatArea.appendChild(typingMsg);
+    chatArea.scrollTop = chatArea.scrollHeight;
+
+    // 模拟回复
+    setTimeout(() => {
+      typingMsg.remove();
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'message ai';
+      aiMsg.textContent = '收到，先生！这是一个界面预览，实际功能需要安装APK后使用。您觉得这个界面怎么样？';
+      chatArea.appendChild(aiMsg);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }, 1500);
+  }
+</script>
+
+</body>
+</html>
